@@ -2,17 +2,10 @@ import ngeohash from 'ngeohash';
 import React from 'react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Grid, Typography, Container, Box, Paper } from '@mui/material';
 import Textfield from './components/Textfield';
 import Button from './components/Button';
-
-const useStyles = makeStyles((theme) => ({
-  formWrapper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-  },
-}));
 
 const INITIAL_FORM_STATE = {
   longitude: '',
@@ -34,91 +27,147 @@ const FORM_VALIDATION = Yup.object().shape({
     ),
 });
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  height: '100px',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  borderRadius: '0px',
+  color: theme.palette.text.secondary,
+}));
+
 const App = () => {
-  const classes = useStyles();
   const [geohash, setGeohash] = React.useState('');
   const [neighbors, setNeighbors] = React.useState([]);
 
   return (
-    <Grid container>
-      <Grid item xs={8}>
-        <Container maxWidth="md">
-          <div className={classes.formWrapper}>
-            <Formik
-              initialValues={{
-                ...INITIAL_FORM_STATE,
-              }}
-              validationSchema={FORM_VALIDATION}
-              onSubmit={(values) => {
-                const geohash = ngeohash.encode(
-                  values.latitude,
-                  values.longitude
-                );
-                setGeohash(geohash);
-                setNeighbors(ngeohash.neighbors(geohash));
-              }}
-            >
-              {({ values }) => (
-                <Form>
-                  <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                      <Typography>Longitude: {values.longitude}</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography>Longitude: {values.latitude}</Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Textfield name="longitude" label="Longitude" />
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Textfield name="latitude" label="Latitude" />
-                    </Grid>
-                    <Grid item xs={4}>
-                      <Button>Submit Form</Button>
-                    </Grid>
+    <Container maxWidth="md">
+      <Box mt={2}>
+        <Formik
+          initialValues={{
+            ...INITIAL_FORM_STATE,
+          }}
+          validationSchema={FORM_VALIDATION}
+          onSubmit={(values) => {
+            const geohash = ngeohash.encode(values.latitude, values.longitude);
+            setGeohash(geohash);
+            setNeighbors(ngeohash.neighbors(geohash));
+          }}
+        >
+          {({ values }) => (
+            <Form>
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <Typography>Longitude: {values.longitude}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>Longitude: {values.latitude}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Textfield name="longitude" label="Longitude" />
+                </Grid>
+                <Grid item xs={6}>
+                  <Textfield name="latitude" label="Latitude" />
+                </Grid>
+                <Grid item xs={4}>
+                  <Button>Submit Form</Button>
+                </Grid>
+              </Grid>
+              {geohash && (
+                <Grid
+                  container
+                  sx={{ backgroundColor: 'warning.light', marginTop: '20px' }}
+                >
+                  <Grid item xs={4}>
+                    <Item sx={{ marginBottom: '5px', marginRight: '5px' }}>
+                      <Typography>North-West: {neighbors[7]}</Typography>
+                    </Item>
                   </Grid>
-                  {geohash && (
-                    <Grid container spacing={2}>
-                      <Grid item xs={12}>
-                        <Typography>Geohash: {geohash}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography color="primary">Neighbors:</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>north: {neighbors[0]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>north-east: {neighbors[1]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>east: {neighbors[2]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>south-east: {neighbors[3]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>south: {neighbors[4]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>south-west: {neighbors[5]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>west: {neighbors[6]}</Typography>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <Typography>north-west: {neighbors[7]}</Typography>
-                      </Grid>
-                    </Grid>
-                  )}
-                </Form>
+                  <Grid item xs={4}>
+                    <Item sx={{ marginBottom: '5px', marginRight: '5px' }}>
+                      <Typography>North: {neighbors[0]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item>
+                      <Typography>North-East: {neighbors[1]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item sx={{ marginBottom: '5px', marginRight: '5px' }}>
+                      <Typography>West: {neighbors[6]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item sx={{ marginBottom: '5px', marginRight: '5px' }}>
+                      <Typography>Geohash: {geohash}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item>
+                      <Typography>East: {neighbors[2]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item sx={{ marginRight: '5px' }}>
+                      <Typography>South-West: {neighbors[5]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item sx={{ marginRight: '5px' }}>
+                      <Typography>South: {neighbors[4]}</Typography>
+                    </Item>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Item>
+                      <Typography>South-East: {neighbors[3]}</Typography>
+                    </Item>
+                  </Grid>
+                </Grid>
               )}
-            </Formik>
-          </div>
-        </Container>
-      </Grid>
-    </Grid>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Container>
   );
 };
 
 export default App;
+
+{
+  /* <Container maxWidth="md">
+      <Grid container sx={{ backgroundColor: 'warning.light' }}>
+        <Grid item xs={4}>
+          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>NW</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>N</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>NE</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>W</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>result</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>E</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={{ marginRight: '10px' }}>SW</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item sx={{ marginRight: '10px' }}>S</Item>
+        </Grid>
+        <Grid item xs={4}>
+          <Item>SE</Item>
+        </Grid>
+      </Grid>
+    </Container> */
+}
