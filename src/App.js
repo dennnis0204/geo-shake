@@ -137,37 +137,3 @@ const App = () => {
 };
 
 export default App;
-
-{
-  /* <Container maxWidth="md">
-      <Grid container sx={{ backgroundColor: 'warning.light' }}>
-        <Grid item xs={4}>
-          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>NW</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>N</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>NE</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>W</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item sx={{ marginBottom: '10px', marginRight: '10px' }}>result</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>E</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item sx={{ marginRight: '10px' }}>SW</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item sx={{ marginRight: '10px' }}>S</Item>
-        </Grid>
-        <Grid item xs={4}>
-          <Item>SE</Item>
-        </Grid>
-      </Grid>
-    </Container> */
-}
